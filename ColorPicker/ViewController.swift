@@ -21,49 +21,50 @@ class ViewController: UIViewController {
     @IBOutlet var blueSlider: UISlider!
     
     // MARK: - Life cycles
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         colorDisplay.layer.cornerRadius = 15
-        colorDisplay.backgroundColor =
-        UIColor(red: CGFloat(redSlider.value),
-                green: CGFloat(greenSlider.value),
-                blue: CGFloat(blueSlider.value),
-                alpha: 1)
+        
+        setColor()
+        
+        redValueLabel.text = string(from: redSlider)
+        greenValueLabel.text = string(from: greenSlider)
+        blueValueLabel.text = string(from: blueSlider)
     }
     
     // MARK: - IBAction
-    @IBAction func redSliderAction() {
-        redValueLabel.text = formatSlider(value: redSlider.value)
-        colorDisplay.backgroundColor =
-        UIColor(red: CGFloat(redSlider.value),
-                green: CGFloat(greenSlider.value),
-                blue: CGFloat(blueSlider.value),
-                alpha: 1)
+    @IBAction func sliderAction(_ sender: UISlider) {
+        setColor()
+        switch sender {
+        case redSlider:
+            redValueLabel.text = string(from: redSlider)
+        case greenSlider:
+            greenValueLabel.text = string(from: greenSlider)
+        default:
+            blueValueLabel.text = string(from: blueSlider)
+        }
     }
     
-    @IBAction func greenSliderAction() {
-        greenValueLabel.text = formatSlider(value: greenSlider.value)
-        colorDisplay.backgroundColor =
-        UIColor(red: CGFloat(redSlider.value),
-                green: CGFloat(greenSlider.value),
-                blue: CGFloat(blueSlider.value),
-                alpha: 1)
+    // MARK: - Setup Value Label
+    private func string(from slider: UISlider) -> String {
+        String(format: "%.2f", slider.value)
     }
     
-    @IBAction func blueSliderAction() {
-        blueValueLabel.text = formatSlider(value: blueSlider.value)
-        colorDisplay.backgroundColor =
-        UIColor(red: CGFloat(redSlider.value),
-                green: CGFloat(greenSlider.value),
-                blue: CGFloat(blueSlider.value),
-                alpha: 1)
+    //MARK: - Setup background color
+    private func setColor() {
+        colorDisplay.backgroundColor = UIColor(
+            red: redSlider.value.cgFloat(),
+            green: greenSlider.value.cgFloat(),
+            blue: blueSlider.value.cgFloat(),
+            alpha: 1
+        )
     }
-    
-    // MARK: - Setup formats
-    private func formatSlider(value: Float) -> String {
-        String(format: "%.2f", value)
-    }
-    
 }
 
+extension Float {
+    func cgFloat() -> CGFloat {
+        CGFloat(self)
+    }
+}
